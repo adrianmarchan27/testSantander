@@ -13,8 +13,8 @@ export class SantanderService {
 
   constructor(private http: HttpClient) { }
 
-  getPokemon(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}?limit=100&offset=0`)
+  getPokemon(): Observable<IPokemon[]> {
+    return this.http.get<IPokemon[]>(`${this.baseUrl}?limit=100&offset=0`)
       .pipe(
         map((response: any) => response.results),
       );
@@ -22,7 +22,7 @@ export class SantanderService {
 
   getPokemonById(id: string) : Observable<IPokemon>{
     return this.http.get<IPokemon>(`${this.baseUrl}/${id}`).pipe(
-      map((response: any) => ({name: response.name, url: response.sprites.other.dream_world.front_default}))
+      map((response: any) => ({id: id,name: response.name, url: response.sprites.other.dream_world.front_default}))
     )
   }
 }
