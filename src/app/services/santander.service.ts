@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http' 
 import { IPokemon } from '../interfaces/IPokemon.interface';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { map} from 'rxjs/operators';
 
 @Injectable({
@@ -23,6 +23,12 @@ export class SantanderService {
   getPokemonById(id: string) : Observable<IPokemon>{
     return this.http.get<IPokemon>(`${this.baseUrl}/${id}`).pipe(
       map((response: any) => ({id: id,name: response.name, url: response.sprites.other.dream_world.front_default}))
-    )
+    );
+  }
+
+  async getPokemonByIdPromise(id: string) : Promise<IPokemon>{
+    return await firstValueFrom((this.http.get<IPokemon>(`${this.baseUrl}/${id}`).pipe(
+      map((response: any) => ({id: id,name: response.name, url: response.sprites.other.dream_world.front_default}))
+    )));
   }
 }
